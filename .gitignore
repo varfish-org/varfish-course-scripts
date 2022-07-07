@@ -1,3 +1,6 @@
+/addsnv*
+/addindel*
+/addsv*
 .snakemake
 /work
 *.sif

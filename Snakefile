@@ -43,9 +43,9 @@ rule download:
         """ % download_url)
 
 
-def get_pedigree(wildcards, _output):
+def get_pedigree(wildcards):
     for pedigree in config["pedigrees"]:
-        for samples in pedigree["samples"]:
+        for sample in pedigree["samples"]:
             if sample["name"] == wildcards.sample_name:
                 return pedigree["name"]
     return None
@@ -75,53 +75,57 @@ rule bamsurgeon_snv:
     params:
         pedigree=get_pedigree,
     output:
-        bam="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam.bai",
+        bam="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam",
+        bai="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam.bai",
     resources:
         mem="16G",
         time="24:00:00",
         partition="critical",
     shell:
         r"""
-        if [[ -e {params.pedigree}/{params.pedigree}.snv.txt ]]; then
+        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt ]]; then
             singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
                 bamsurgeon.sif \
-                python3 /bamsurgeon/bin/addsnv.py \
+                /usr/bin/python3.8 \
+                    /bamsurgeon/bin/addsnv.py \
                     --reference {PATH_REF} \
                     -f {input.bam} \
                     -o {output.bam} \
-                    -v {params.pedigree}/{params.pedigree}.snv.txt
+                    -v {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt
             samtools index {output.bam}
         else
-            ln -s {input.bam} {output.bam}
-            ln -s {input.bai} {output.bai}
+            ln -sr {input.bam} {output.bam}
+            ln -sr {input.bai} {output.bai}
         fi
         """
 
 rule bamsurgeon_indel:
     input:
-        bam="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam",
+        bam="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam",
     output:
-        bam="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam.bai",
+        bam="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam",
+        bai="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam.bai",
     resources:
         mem="16G",
         time="24:00:00",
         partition="critical",
+    params:
+        pedigree=get_pedigree,
     shell:
         r"""
-        if [[ -e {params.pedigree}/{params.pedigree}.indel.txt ]]; then
+        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.indel.txt ]]; then
             singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
                 bamsurgeon.sif \
-                python3 /bamsurgeon/bin/addindel.py \
+                /usr/bin/python3.8 \
+                    /bamsurgeon/bin/addindel.py \
                     --reference {PATH_REF} \
                     -f {input.bam} \
                     -o {output.bam} \
-                    -v {params.pedigree}/{params.pedigree}.indel.txt
+                    -v {params.pedigree}/{wildcrds.sample_name}.GRCh38.indel.txt
             samtools index {output.bam}
         else
-            ln -s {input.bam} {output.bam}
-            ln -s {input.bai} {output.bai}
+            ln -sr {input.bam} {output.bam}
+            ln -sr {input.bai} {output.bai}
         fi
         """
 
@@ -135,20 +139,23 @@ rule bamsurgeon_sv:
         mem="16G",
         time="24:00:00",
         partition="critical",
+    params:
+        pedigree=get_pedigree,
     shell:
         r"""
-        if [[ -e {params.pedigree}/{params.pedigree}.sv.txt ]]; then
+        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt ]]; then
             singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
                 bamsurgeon.sif \
-                python3 /bamsurgeon/bin/addsv.py \
+                /usr/bin/python3.8 \
+                    /bamsurgeon/bin/addsv.py \
                     --reference {PATH_REF} \
                     -f {input.bam} \
                     -o {output.bam} \
-                    -v {params.pedigree}/{params.pedigree}.sv.txt
+                    -v {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt
             samtools index {output.bam}
         else
-            ln -s {input.bam} {output.bam}
-            ln -s {input.bai} {output.bai}
+            ln -sr {input.bam} {output.bam}
+            ln -sr {input.bai} {output.bai}
         fi
         """
 
