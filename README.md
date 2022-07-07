@@ -46,3 +46,9 @@ EOF
 # REFERENCE=/fast/projects/cubit/current/static_data/reference/GRCh38/hs38/hs38.fa
 # samtools view -@ 4 -T /fast/projects/cubit/current/static_data/reference/GRCh38/hs38DH/hs38DH.fa -b -o HG01679.final.bam HG01679.final.cram
 ```
+
+## Generating instructions
+
+```
+# bash variants/gen-vars.sh
+```
