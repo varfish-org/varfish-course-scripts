@@ -1,0 +1,117 @@
+pedigrees:
+    - name: "1354"
+      samples:
+          - name: NA12399
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239477/NA12399.final.cram
+          - name: NA12400
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239478/NA12400.final.cram
+          - name: NA12386
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989323/NA12386.final.cram
+    - name: "1454"
+      samples:
+          - name: NA12812
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239326/NA12812.final.cram
+          - name: NA12813
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239327/NA12813.final.cram
+          - name: NA12814
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239328/NA12814.final.cram
+          - name: NA12815
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239329/NA12815.final.cram
+          - name: NA12801
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989332/NA12801.final.cram
+          - name: NA12802
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989333/NA12802.final.cram
+    - name: "1456"
+      samples:
+          - name: NA12827
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239485/NA12827.final.cram
+          - name: NA12829
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239486/NA12829.final.cram
+          - name: NA12828
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239330/NA12828.final.cram
+          - name: NA12830
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3243162/NA12830.final.cram
+          - name: NA12817
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989334/NA12817.final.cram
+          - name: NA12818
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989335/NA12818.final.cram 
+    - name: "1459"
+      samples:
+          - name: NA12872
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239331/NA12872.final.cram
+          - name: NA12873
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239332/NA12873.final.cram
+          - name: NA12874
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239333/NA12874.final.cram
+          - name: NA12864
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989337/NA12864.final.cram
+          - name: NA12865
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989338/NA12865.final.cram
+          - name: NA12875
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989339/NA12875.final.cram
+    - name: "BB06"
+      samples:
+          - name: HG01912
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242234/HG01912.final.cram
+          - name: HG01894
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242235/HG01894.final.cram
+          - name: HG01895
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988944/HG01895.final.cram
+    - name: "BB09"
+      samples:
+          - name: HG01915
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242219/HG01915.final.cram
+          - name: HG01914
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242218/HG01914.final.cram
+          - name: HG01916
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988947/HG01916.final.cram 
+    - name: "IBS029"
+      samples:
+          - name: HG01679
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241972/HG01679.final.cram
+          - name: HG01680
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241973/HG01680.final.cram
+          - name: HG01681
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988922/HG01681.final.cram
+    - name: "m023"
+      samples:
+          - name: NA19746
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239933/NA19746.final.cram
+          - name: NA19747
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR323/ERR3239934/NA19747.final.cram
+          - name: NA19748
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989435/NA19748.final.cram 
+    - name: "PEL011"
+      samples:
+          - name: HG01926
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241998/HG01926.final.cram
+          - name: HG01927
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3241999/HG01927.final.cram
+          - name: HG01928
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988951/HG01928.final.cram
+    - name: "PEL013"
+      samples:
+          - name: HG01932
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242000/HG01932.final.cram
+          - name: HG01933
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242001/HG01933.final.cram
+          - name: HG01934
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988952/HG01934.final.cram
+    - name: "PK06"
+      samples:
+          - name: HG02490
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242397/HG02490.final.cram
+          - name: HG02491
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR324/ERR3242398/HG02491.final.cram
+          - name: HG02492
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3989019/HG02492.final.cram 
+    - name: "SH052"
+      samples:
+          - name: HG00577
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988792/HG00577.final.cram
+          - name: HG00578
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988793/HG00578.final.cram
+          - name: HG00579
+            download_url: ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR398/ERR3988794/HG00579.final.cram
+
+path_ref: /fast/work/groups/cubi/projects/2022-07-06_VarFish_Course_Data/varfish-course-scripts/reference/hs38DH.fa

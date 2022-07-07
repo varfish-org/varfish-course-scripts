@@ -1,0 +1,1 @@
+/fast/projects/cubit/current/static_data/precomputed/BWA/0.7.17/GRCh38/hs38DH/hs38DH.fa.pac
