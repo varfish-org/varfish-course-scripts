@@ -83,6 +83,11 @@ rule bamsurgeon_snv:
         partition="critical",
     shell:
         r"""
+        export TMPDIR=$PWD/tmp
+        mkdir -p $TMPDIR
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" ERR EXIT
+
         if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt ]]; then
             singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
                 bamsurgeon.sif \
@@ -90,8 +95,10 @@ rule bamsurgeon_snv:
                     /bamsurgeon/bin/addsnv.py \
                     --reference {PATH_REF} \
                     -f {input.bam} \
-                    -o {output.bam} \
+                    -o $TMPDIR/unsorted.bam \
+                    --tmpdir $TMPDIR \
                     -v {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt
+            samtools sort -O BAM -o {output.bam} $TMPDIR/unsorted.bam
             samtools index {output.bam}
         else
             ln -sr {input.bam} {output.bam}
@@ -102,6 +109,7 @@ rule bamsurgeon_snv:
 rule bamsurgeon_indel:
     input:
         bam="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam",
+        bai="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam.bai",
     output:
         bam="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam",
         bai="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam.bai",
@@ -113,6 +121,11 @@ rule bamsurgeon_indel:
         pedigree=get_pedigree,
     shell:
         r"""
+        export TMPDIR=$PWD/tmp
+        mkdir -p $TMPDIR
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" ERR EXIT
+
         if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.indel.txt ]]; then
             singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
                 bamsurgeon.sif \
@@ -120,8 +133,10 @@ rule bamsurgeon_indel:
                     /bamsurgeon/bin/addindel.py \
                     --reference {PATH_REF} \
                     -f {input.bam} \
-                    -o {output.bam} \
-                    -v {params.pedigree}/{wildcrds.sample_name}.GRCh38.indel.txt
+                    -o $TMPDIR/unsorted.bam \
+                    --tmpdir $TMPDIR \
+                    -v {params.pedigree}/{wildcards.sample_name}.GRCh38.indel.txt
+            samtools sort -O BAM -o {output.bam} $TMPDIR/unsorted.bam
             samtools index {output.bam}
         else
             ln -sr {input.bam} {output.bam}
@@ -132,6 +147,7 @@ rule bamsurgeon_indel:
 rule bamsurgeon_sv:
     input:
         bam="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam",
+        bai="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam.bai",
     output:
         bam="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam",
         bai="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam.bai",
@@ -143,6 +159,11 @@ rule bamsurgeon_sv:
         pedigree=get_pedigree,
     shell:
         r"""
+        export TMPDIR=$PWD/tmp
+        mkdir -p $TMPDIR
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" ERR EXIT
+
         if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt ]]; then
             singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
                 bamsurgeon.sif \
@@ -150,8 +171,10 @@ rule bamsurgeon_sv:
                     /bamsurgeon/bin/addsv.py \
                     --reference {PATH_REF} \
                     -f {input.bam} \
-                    -o {output.bam} \
+                    -o $TMPDIR/unsorted.bam \
+                    --tmpdir $TMPDIR \
                     -v {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt
+            samtools sort -O BAM -o {output.bam} $TMPDIR/unsorted.bam
             samtools index {output.bam}
         else
             ln -sr {input.bam} {output.bam}
@@ -178,8 +201,8 @@ rule bam_to_fastq:
 
         samtools sort -n -o $TMPDIR/qname-sort.bam {input.bam}
         bedtools bamtofastq -i $TMPDIR/qname-sort.bam \
-            -fq >(gzip -c {output.fastq_1}) \
-            -fq2 >(gzip -c {output.fastq_2})
+            -fq >(gzip -c >{output.fastq_1}) \
+            -fq2 >(gzip -c >{output.fastq_2})
 
         pushd $(dirname {output.fastq_1})
         md5sum $(basename {output.fastq_1}) > $(basename {output.fastq_1}).md5
