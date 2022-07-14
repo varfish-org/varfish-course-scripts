@@ -98,7 +98,7 @@ rule bamsurgeon_snv:
                     -o $TMPDIR/unsorted.bam \
                     --tmpdir $TMPDIR \
                     -v {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt
-            samtools sort -O BAM -o {output.bam} $TMPDIR/unsorted.bam
+            samtools sort -T $TMPDIR/tmp-unsorted -O BAM -o {output.bam} $TMPDIR/unsorted.bam
             samtools index {output.bam}
         else
             ln -sr {input.bam} {output.bam}
@@ -136,7 +136,7 @@ rule bamsurgeon_indel:
                     -o $TMPDIR/unsorted.bam \
                     --tmpdir $TMPDIR \
                     -v {params.pedigree}/{wildcards.sample_name}.GRCh38.indel.txt
-            samtools sort -O BAM -o {output.bam} $TMPDIR/unsorted.bam
+            samtools sort -T $TMPDIR/tmp-unsorted -O BAM -o {output.bam} $TMPDIR/unsorted.bam
             samtools index {output.bam}
         else
             ln -sr {input.bam} {output.bam}
@@ -174,7 +174,7 @@ rule bamsurgeon_sv:
                     -o $TMPDIR/unsorted.bam \
                     --tmpdir $TMPDIR \
                     -v {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt
-            samtools sort -O BAM -o {output.bam} $TMPDIR/unsorted.bam
+            samtools sort -T $TMPDIR/tmp-unsorted -O BAM -o {output.bam} $TMPDIR/unsorted.bam
             samtools index {output.bam}
         else
             ln -sr {input.bam} {output.bam}
@@ -199,7 +199,7 @@ rule bam_to_fastq:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        samtools sort -n -o $TMPDIR/qname-sort.bam {input.bam}
+        samtools sort -T $TMPDIR/tmp-unsorted -n -o $TMPDIR/qname-sort.bam {input.bam}
         bedtools bamtofastq -i $TMPDIR/qname-sort.bam \
             -fq >(gzip -c >{output.fastq_1}) \
             -fq2 >(gzip -c >{output.fastq_2})

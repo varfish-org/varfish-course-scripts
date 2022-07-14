@@ -1,7 +1,7 @@
 #Case	Pedigree	Sample	Role	SNV#1	SNV#1	SNV#2	SNV#2	SV	SV
 1	1354/1354.ped	NA12386	index-female	GRCh38:5:177209663:G:T	chr5,177209663,177209664,0.5,T				
 1	1354/1354.ped	NA12399	father						
-1	1354/1354.ped	NA12399	mother						
+1	1354/1354.ped	NA12400	mother						
 2	1454/1454.ped	NA12801	index-female	GRCh38:1:26779430:G:A	chr1,26779430,26779431,0.25,A				
 2	1454/1454.ped	NA12812	father						
 2	1454/1454.ped	NA12813	mother						
