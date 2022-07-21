@@ -65,18 +65,27 @@ rule cram_to_bam:
     shell:
         r"""
         samtools view -@ 4 -T {PATH_REF} -O BAM -o {output.bam} {input.cram}
-        samtools index {output.bam}
+        samtools index -@ 4 {output.bam}
         """
 
-rule bamsurgeon_snv:
+
+def get_pedigree(wildcards):
+    for pedigree in config["pedigrees"]:
+        for sample in pedigree["samples"]:
+            if sample["name"] == wildcards.sample_name:
+                return pedigree["name"]
+    return None
+
+
+rule bamspiker:
     input:
         bam="work/cram_to_bam/{sample_name}/{sample_name}.bam",
         bai="work/cram_to_bam/{sample_name}/{sample_name}.bam.bai",
     params:
         pedigree=get_pedigree,
     output:
-        bam="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam.bai",
+        bam="work/bamspiker/{sample_name}/{sample_name}.bam",
+        bai="work/bamspiker/{sample_name}/{sample_name}.bam.bai",
     resources:
         mem="16G",
         time="24:00:00",
@@ -87,111 +96,33 @@ rule bamsurgeon_snv:
         mkdir -p $TMPDIR
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" ERR EXIT
+        set -x
 
-        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt ]]; then
-            singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
-                bamsurgeon.sif \
-                /usr/bin/python3.8 \
-                    /bamsurgeon/bin/addsnv.py \
-                    --reference {PATH_REF} \
-                    -f {input.bam} \
-                    -o $TMPDIR/unsorted.bam \
-                    --tmpdir $TMPDIR \
-                    -v {params.pedigree}/{wildcards.sample_name}.GRCh38.snv.txt
-            samtools sort -T $TMPDIR/tmp-unsorted -O BAM -o {output.bam} $TMPDIR/unsorted.bam
-            samtools index {output.bam}
+        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.yaml ]]; then
+            bamspiker \
+                {params.pedigree}/{wildcards.sample_name}.GRCh38.yaml \
+                {PATH_REF} \
+                {input.bam} \
+                {output.bam}
+            samtools index -@ 4 {output.bam}
         else
             ln -sr {input.bam} {output.bam}
             ln -sr {input.bai} {output.bai}
         fi
         """
 
-rule bamsurgeon_indel:
-    input:
-        bam="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-snv/{sample_name}/{sample_name}.bam.bai",
-    output:
-        bam="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam.bai",
-    resources:
-        mem="16G",
-        time="24:00:00",
-        partition="critical",
-    params:
-        pedigree=get_pedigree,
-    shell:
-        r"""
-        export TMPDIR=$PWD/tmp
-        mkdir -p $TMPDIR
-        export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" ERR EXIT
-
-        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.indel.txt ]]; then
-            singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
-                bamsurgeon.sif \
-                /usr/bin/python3.8 \
-                    /bamsurgeon/bin/addindel.py \
-                    --reference {PATH_REF} \
-                    -f {input.bam} \
-                    -o $TMPDIR/unsorted.bam \
-                    --tmpdir $TMPDIR \
-                    -v {params.pedigree}/{wildcards.sample_name}.GRCh38.indel.txt
-            samtools sort -T $TMPDIR/tmp-unsorted -O BAM -o {output.bam} $TMPDIR/unsorted.bam
-            samtools index {output.bam}
-        else
-            ln -sr {input.bam} {output.bam}
-            ln -sr {input.bai} {output.bai}
-        fi
-        """
-
-rule bamsurgeon_sv:
-    input:
-        bam="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-indel/{sample_name}/{sample_name}.bam.bai",
-    output:
-        bam="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam",
-        bai="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam.bai",
-    resources:
-        mem="16G",
-        time="24:00:00",
-        partition="critical",
-    params:
-        pedigree=get_pedigree,
-    shell:
-        r"""
-        export TMPDIR=$PWD/tmp
-        mkdir -p $TMPDIR
-        export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" ERR EXIT
-
-        if [[ -e {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt ]]; then
-            singularity run --env PATH=$PATH:/bin/velvet-1.2.10 --bind /data,/fast \
-                bamsurgeon.sif \
-                /usr/bin/python3.8 \
-                    /bamsurgeon/bin/addsv.py \
-                    --reference {PATH_REF} \
-                    -f {input.bam} \
-                    -o $TMPDIR/unsorted.bam \
-                    --tmpdir $TMPDIR \
-                    -v {params.pedigree}/{wildcards.sample_name}.GRCh38.sv.txt
-            samtools sort -T $TMPDIR/tmp-unsorted -O BAM -o {output.bam} $TMPDIR/unsorted.bam
-            samtools index {output.bam}
-        else
-            ln -sr {input.bam} {output.bam}
-            ln -sr {input.bai} {output.bai}
-        fi
-        """
 
 rule bam_to_fastq:
     input:
-        bam="work/bamsurgeon-sv/{sample_name}/{sample_name}.bam",
+        bam="work/bamspiker/{sample_name}/{sample_name}.bam",
     output:
         fastq_1="output/{sample_name}/{sample_name}_1.fastq.gz",
         fastq_2="output/{sample_name}/{sample_name}_2.fastq.gz",
         md5_1="output/{sample_name}/{sample_name}_1.fastq.gz.md5",
         md5_2="output/{sample_name}/{sample_name}_2.fastq.gz.md5",
+    threads: 4
     resources:
-        mem="2G",
+        mem="18G",
         time="24:00:00",
         partition="critical",
     shell:
@@ -199,7 +130,7 @@ rule bam_to_fastq:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        samtools sort -T $TMPDIR/tmp-unsorted -n -o $TMPDIR/qname-sort.bam {input.bam}
+        samtools sort -@ 4 -m 4G -T $TMPDIR/tmp-unsorted -n -o $TMPDIR/qname-sort.bam {input.bam}
         bedtools bamtofastq -i $TMPDIR/qname-sort.bam \
             -fq >(gzip -c >{output.fastq_1}) \
             -fq2 >(gzip -c >{output.fastq_2})

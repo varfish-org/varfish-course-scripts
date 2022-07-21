@@ -1,0 +1,13 @@
+var_specs:
+  - var_type: Snv
+    chromosome: "chr1"
+    start: 145927448
+    end: 145927448
+    reference: "."
+    alternative: "T"
+    aaf: 0.5
+  - var_type: "Deletion"
+    chromosome: "chr2"
+    start: 145840895
+    end: 146035921
+    aaf: 0.5

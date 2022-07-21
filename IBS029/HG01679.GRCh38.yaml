@@ -1,0 +1,8 @@
+var_specs:
+  - var_type: Snv
+    chromosome: "chr8"
+    start: 99467392
+    end: 99467392
+    reference: "."
+    alternative: "G"
+    aaf: 0.5

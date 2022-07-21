@@ -1,0 +1,8 @@
+var_specs:
+  - var_type: Snv
+    chromosome: "chr1"
+    start: 145927448
+    end: 145927448
+    reference: "."
+    alternative: "T"
+    aaf: 0.5

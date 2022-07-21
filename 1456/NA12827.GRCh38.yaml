@@ -1,0 +1,8 @@
+var_specs:
+  - var_type: Snv
+    chromosome: "chr20"
+    start: 51694008
+    end: 51694008
+    reference: "."
+    alternative: "T"
+    aaf: 0.5

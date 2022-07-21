@@ -1,0 +1,6 @@
+var_specs:
+  - var_type: "Deletion"
+    chromosome: "chr17"
+    start: 46050658
+    end: 46055315
+    aaf: 0.5

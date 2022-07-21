@@ -1,0 +1,8 @@
+var_specs:
+  - var_type: Snv
+    chromosome: "chr12"
+    start: 112450347
+    end: 112450347
+    reference: "."
+    alternative: "G"
+    aaf: 0.5

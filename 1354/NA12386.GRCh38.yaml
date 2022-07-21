@@ -1,0 +1,8 @@
+var_specs:
+  - var_type: Snv
+    chromosome: "chr5"
+    start: 177209664
+    end: 177209664
+    reference: "."
+    alternative: "T"
+    aaf: 0.5
