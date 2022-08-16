@@ -1,15 +1,15 @@
 var_specs:
   - var_type: Snv
     chromosome: "chr17"
-    start: 39673091
-    end: 39673091
+    start: 39673090
+    end: 39673090
     reference: "."
     alternative: "A"
     aaf: 0.5
   - var_type: Snv
     chromosome: "chr17"
-    start: 39672245
-    end: 39672245
+    start: 39672244
+    end: 39672244
     reference: "."
     alternative: "A"
     aaf: 0.5

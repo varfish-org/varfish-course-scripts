@@ -1,8 +1,8 @@
 var_specs:
   - var_type: Snv
     chromosome: "chrX"
-    start: 68839667
-    end: 68839667
+    start: 68839666
+    end: 68839666
     reference: "."
     alternative: "T"
     aaf: 1.0

@@ -1,6 +1,6 @@
 var_specs:
-  - var_type: "Deletion"
-    chromosome: "chr2"
-    start: 145840895
-    end: 146035921
-    aaf: 0.5
+  - var_type: "0.5"
+    chromosome: "chr1"
+    start: -688
+    end: Deletion
+    aaf: 
